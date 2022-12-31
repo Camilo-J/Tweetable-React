@@ -118,7 +118,7 @@ function SignupForm() {
         />
         <Input
           name="avatar"
-          type="password"
+          type="file"
           value={password_confirmation}
           onChange={handleChange}
           placeholder="*******"
