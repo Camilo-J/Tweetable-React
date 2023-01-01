@@ -4,15 +4,16 @@ import * as auth from "../services/auth-services";
 import { useNavigate } from "react-router-dom";
 
 interface Conte {
-  user: null | {};
-  login: Function;
-  logout: Function;
-  signup: Function;
-  state: {};
-  setState: Function;
+  user?: null | {};
+  login?: Function;
+  logout?: Function;
+  signup?: Function;
+  state?: {};
+  setState?: Function;
+  navigate?: Function;
 }
 
-const AuthContext = createContext<Conte | null>(null);
+const AuthContext = createContext<Conte>({});
 
 function AuthProvider(props: object) {
   const [user, setUser] = useState(null);
@@ -23,10 +24,6 @@ function AuthProvider(props: object) {
     data: null,
     error: null,
   });
-
-  // useEffect(() => {
-  //   getUser().then(setUser).catch(console.log);
-  // }, []);
 
   function login(credentials: object) {
     auth.login(credentials).then(setUser).catch(console.log);
@@ -43,23 +40,20 @@ function AuthProvider(props: object) {
     createUser(userData).then(setUser).catch(console.log);
   }
 
-  // function update(userData) {
-  //   updateUser(userData).then(setUser).catch(console.log);
-  // }
-
-  const value = {
+  const value: Conte = {
     user,
     login,
     logout,
     signup,
     state,
     setState,
+    navigate,
   };
 
   return <AuthContext.Provider value={value} {...props} />;
 }
 
-function useAuth(): Conte {
+function useAuth() {
   return useContext(AuthContext);
 }
 
