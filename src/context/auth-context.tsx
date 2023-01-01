@@ -25,6 +25,13 @@ function AuthProvider(props: object) {
     error: null,
   });
 
+  useEffect(() => {
+    const id = sessionStorage.getItem("id");
+    if (id) {
+      getUser(Number.parseInt(id)).then(setUser).catch(console.log);
+    }
+  }, []);
+
   function login(credentials: object) {
     auth.login(credentials).then(setUser).catch(console.log);
   }
