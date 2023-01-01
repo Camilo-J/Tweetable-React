@@ -20,7 +20,6 @@ export async function createUser(userData: object) {
 // }
 
 export async function getUser(id: number) {
-  const { token, ...user } = await collectionClient(`/users/${id}`);
-
+  const { ...user } = await collectionClient(`/users/${id}`);
   return user;
 }
