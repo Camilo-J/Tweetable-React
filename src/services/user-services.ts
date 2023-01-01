@@ -5,8 +5,7 @@ export async function createUser(userData: object) {
   const { user } = await collectionClient("/auth", {
     body: userData,
   });
-  //   const token =
-  //   sessionStorage.setItem(tokenKey, token);
+  sessionStorage.setItem("id", user.id);
   return user;
 }
 
