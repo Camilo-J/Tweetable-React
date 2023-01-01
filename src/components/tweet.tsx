@@ -3,16 +3,30 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { HiOutlineHeart } from "react-icons/hi";
 import { FiEdit } from "react-icons/fi";
 import { BiTrash } from "react-icons/bi";
+import * as dayjs from "dayjs";
+import * as relativeTime from "dayjs/plugin/relativeTime";
 
 import Avatar from "../assets/avatar.png";
 import { colors } from "../styles";
 import { typography } from "../styles";
 
+dayjs.extend(relativeTime);
 interface Props {
+  children?: React.ReactNode;
   color?: string;
   gap?: number;
   type?: "head" | "text";
   size?: keyof typeof typography.head;
+}
+
+interface Tweet {
+  name: string;
+  username: string;
+  body: string;
+  date: string;
+  image?: string;
+  likes: number;
+  comments: number;
 }
 
 const Container = styled.div`
@@ -64,7 +78,15 @@ const Sentence = styled.p<Props>`
   color: ${(p) => p.color};
 `;
 
-const Tweet = () => {
+const Tweet = ({
+  name,
+  username,
+  body,
+  date,
+  image,
+  likes,
+  comments,
+}: Tweet) => {
   return (
     <Container>
       <HeaderTweet>
@@ -72,18 +94,18 @@ const Tweet = () => {
         <div>
           <HeaderTweetData>
             <Sentence type={"text"} size={"lg"}>
-              Camilo
+              {name}
             </Sentence>
             <Sentence color="#F490B1" type={"text"} size={"md"}>
-              @Minato
+              @{username}
             </Sentence>
           </HeaderTweetData>
           <Sentence type={"text"} size={"sm"} color={"#7A7A7A"}>
-            About 12 hours ago
+            {dayjs(date).fromNow(true)} ago
           </Sentence>
         </div>
       </HeaderTweet>
-      <p className="body-card text-gray-400">lala soy un tweet </p>
+      <p className="body-card text-gray-400">{body}</p>
 
       <FooterCard>
         <FooterCardOptions gap={1.5}>
@@ -92,11 +114,13 @@ const Tweet = () => {
         </FooterCardOptions>
         <FooterCardOptions gap={0.7}>
           <Icon>
-            <FaRegCommentDots />0
+            <FaRegCommentDots />
+            {comments}
           </Icon>
 
           <Icon>
-            <HiOutlineHeart />1
+            <HiOutlineHeart />
+            {likes}
           </Icon>
         </FooterCardOptions>
       </FooterCard>
