@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 
 import Tweet from "../components/tweet";
+import { useAuth } from "../context/auth-context";
 import { typography } from "../styles";
 import { DataTweet, PropsCompo } from "../UnauthenticatedApp";
 
@@ -24,14 +25,21 @@ const ContainerTweets = styled.div`
   gap: 2rem;
 `;
 
-const HomePageNoUser = ({ tweets, handleTweet }: PropsCompo) => {
+const HomePageNoUser = ({ tweets }: PropsCompo) => {
+  const { navigate } = useAuth();
+
+  function navigateTweet(id: number) {
+    navigate && navigate(`/tweets/${id}`);
+  }
+
   return (
     <Container>
       <Title>Home</Title>
       <ContainerTweets>
-        {tweets.map((elem: DataTweet, index: number) => (
+        {tweets?.map((elem: DataTweet, index: number) => (
           <Tweet
             key={index}
+            id={elem.id}
             name={elem.user_data.name}
             body={elem.body}
             username={elem.user_data.username}
@@ -39,6 +47,7 @@ const HomePageNoUser = ({ tweets, handleTweet }: PropsCompo) => {
             image={elem.user_data.user_image}
             likes={elem.likes_count}
             comments={elem.replies_count}
+            handleNavigate={navigateTweet}
           ></Tweet>
         ))}
       </ContainerTweets>

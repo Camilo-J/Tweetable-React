@@ -120,6 +120,7 @@ const ShowTweetPage = ({ tweets, handleTweet }: PropsCompo) => {
       <Title>Tweet Detail</Title>
       {tweet ? (
         <Tweet
+          id={tweet.id}
           key={tweet.id}
           name={tweet.user_data.name}
           body={tweet.body}
@@ -151,6 +152,7 @@ const ShowTweetPage = ({ tweets, handleTweet }: PropsCompo) => {
       <ContainerTweets>
         {tweets?.map((elem: DataTweet, index) => (
           <Tweet
+            id={elem.id}
             key={index}
             name={elem.user_data?.name}
             body={elem.body}

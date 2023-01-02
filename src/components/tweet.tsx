@@ -9,6 +9,7 @@ import * as relativeTime from "dayjs/plugin/relativeTime";
 import Avatar from "../assets/avatar.png";
 import { colors } from "../styles";
 import { typography } from "../styles";
+import { MouseEventHandler } from "react";
 
 dayjs.extend(relativeTime);
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 }
 
 interface Tweet {
+  id: number;
   name: string;
   username: string;
   body: string;
@@ -27,10 +29,11 @@ interface Tweet {
   image?: string;
   likes: number;
   comments: number;
+  handleNavigate?: MouseEventHandler;
 }
 
 const Container = styled.div`
-  width: 375px;
+  width: 100%;
   padding: 0.25rem 0.5rem;
   display: flex;
   flex-direction: column;
@@ -79,6 +82,7 @@ const Sentence = styled.p<Props>`
 `;
 
 const Tweet = ({
+  id,
   name,
   username,
   body,
@@ -86,9 +90,10 @@ const Tweet = ({
   image,
   likes,
   comments,
+  handleNavigate,
 }: Tweet) => {
   return (
-    <Container>
+    <Container onClick={(event) => handleNavigate(id)}>
       <HeaderTweet>
         <ImgTweet src={Avatar} />
         <div>
