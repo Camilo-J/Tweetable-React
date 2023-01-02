@@ -1,19 +1,9 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import Tweet from "../components/tweet";
-import { getTweets } from "../services/tweet-services";
-import { typography } from "../styles";
 
-interface DataTweet {
-  id: number;
-  body: string;
-  replies_count: number;
-  likes_count: number;
-  user_data: { name: string; username: string; user_image: string };
-  likes: [{}];
-  updated_at: string;
-}
+import Tweet from "../components/tweet";
+import { typography } from "../styles";
+import { DataTweet, PropsCompo } from "../UnauthenticatedApp";
 
 const Container = styled.div`
   height: 100vh;
@@ -34,19 +24,12 @@ const ContainerTweets = styled.div`
   gap: 2rem;
 `;
 
-const HomePageNoUser = () => {
-  const [tweets, setTweets] = useState([]);
-  useEffect(() => {
-    getTweets()
-      .then((data) => setTweets(data))
-      .catch(console.log);
-  }, []);
-
+const HomePageNoUser = ({ tweets, handleTweet }: PropsCompo) => {
   return (
     <Container>
       <Title>Home</Title>
       <ContainerTweets>
-        {tweets.map((elem: DataTweet, index) => (
+        {tweets.map((elem: DataTweet, index: number) => (
           <Tweet
             key={index}
             name={elem.user_data.name}

@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "../components/Header";
 
 import Tweet from "../components/tweet";
 import { useAuth } from "../context/auth-context";
-import { createTweet, getTweets } from "../services/tweet-services";
+import { createTweet } from "../services/tweet-services";
 import { colors, typography } from "../styles";
+import { PropsCompo } from "../UnauthenticatedApp";
 
 interface DataTweet {
   id: number;
@@ -85,29 +85,24 @@ const Separator = styled.div`
   font-size: 0;
 `;
 
-const ShowTweetPage = () => {
+const ShowTweetPage = ({ tweets, handleTweet }: PropsCompo) => {
   const { user } = useAuth();
-  const [tweets, setTweets] = useState<DataTweet[]>([]);
   const [formdata, setFormData] = useState({
     body: "",
     user: user,
   });
+
   const tweetId = useParams();
+
   const tweet = tweets.find(
     (elem) => elem.id === Number.parseInt(tweetId.id || "")
   );
-
-  useEffect(() => {
-    getTweets()
-      .then((data) => setTweets(data))
-      .catch(console.log);
-  }, []);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     createTweet(formdata)
       .then((data) => {
-        setTweets([data, ...tweets]);
+        handleTweet([data, ...tweets]);
       })
       .catch(console.log);
     setFormData({ ...formdata, body: "" });
@@ -154,14 +149,14 @@ const ShowTweetPage = () => {
         ""
       )}
       <ContainerTweets>
-        {tweets.map((elem: DataTweet, index) => (
+        {tweets?.map((elem: DataTweet, index) => (
           <Tweet
             key={index}
-            name={elem.user_data.name}
+            name={elem.user_data?.name}
             body={elem.body}
-            username={elem.user_data.username}
+            username={elem.user_data?.username}
             date={elem.updated_at}
-            image={elem.user_data.user_image}
+            image={elem.user_data?.user_image}
             likes={elem.likes_count}
             comments={elem.replies_count}
           ></Tweet>
